@@ -1,199 +1,251 @@
 <!DOCTYPE html>
 <html lang="en-us">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>RetroArch - Snes9x Next</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            color: #333;
-        }
-        h1 {
-            background-color: #282c34;
-            color: white;
-            padding: 20px;
-            margin: 0;
-        }
-        .container {
-            width: 90%;
-            max-width: 800px;
-            margin: 20px auto;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-        .emscripten {
-            margin: 10px auto;
-            text-align: center;
-        }
-        textarea.emscripten {
-            font-family: monospace;
-            width: 100%;
-            margin-top: 20px;
-        }
-        div.emscripten_border {
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-        #fakerom {
-            font-size: 20pt;
-            margin: 5pt;
-        }
-        canvas.emscripten {
-            border: 0px none;
-        }
-        label {
-            margin-right: 10px;
-        }
-        input[type="checkbox"], input[type="file"], select, input[type="button"], input[type="textbox"] {
-            margin-bottom: 10px;
-        }
-        hr {
-            border: 0;
-            height: 1px;
-            background-color: #ddd;
-            margin: 20px 0;
-        }
-        .controls {
-            text-align: left;
-            padding: 10px;
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-    </style>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>$SolNES - Solana Super Nintendo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('gifbackground.gif');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      color: white;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .emscripten {
+      margin: 10px auto;
+      background-color: black;
+      text-align: center;
+    }
+
+    textarea.emscripten {
+      font-family: monospace;
+      width: 100%;
+      margin-top: 20px;
+      color: #28F1A8;
+    }
+
+    div.emscripten_border {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+
+    #fakerom {
+      font-size: 20pt;
+      margin: 5pt;
+    }
+
+    canvas.emscripten {
+      border: 0px none;
+    }
+
+    label {
+      margin-right: 10px;
+    }
+
+    input[type="checkbox"],
+    input[type="file"],
+    select,
+    input[type="button"],
+    input[type="textbox"] {
+      margin-bottom: 10px;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background-color: #ddd;
+      margin: 20px 0;
+    }
+
+    .controls {
+      text-align: left;
+      padding: 10px;
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+
+    .solnes-logo {
+      height: 220px;
+    }
+
+    .nintendo-banner {
+      margin-top: 20px;
+    }
+
+    .solnes-description {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>RetroArch - Snes9x Next</h1>
-    <div class="container">
-        <div class="emscripten" id="status"></div>
-        <div class="emscripten">
-            <progress value="0" max="1" id="progress" hidden=""></progress>
-        </div>
-        <div class="emscripten_border" id="canvas_div" style="display: none">
-            <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-        </div>
-        <div class="emscripten emscripten_border" id="openrom">
-            <select id="romsList" onchange="runEmulator(this.value)">
-                <option value="">Select a SNES ROM</option>
-                <option value="Legend of Zelda, The - A Link to the Past (USA).sfc.zip">Legend of Zelda, The - A Link to the Past (USA)</option>
-                <!-- Add more ROMs here as needed -->
-            </select>
-            <br>
-            <input type="file" id="uploadRom" accept=".sfc, .smc, .zip" onchange="handleFileUpload(event)">
-        </div>
-        <hr>
-        <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(true, true)">
-        <hr>
-        <textarea class="emscripten" id="output" rows="8"></textarea>
-        <div class="controls">
-            <strong>Controls:</strong><br>
-            A button (OK in menu): X<br>
-            B button (Back in menu): Z<br>
-            X Button: S<br>
-            Y Button: A<br>
-            L Button: Q<br>
-            R Button: W<br>
-            D-pad: Arrow Keys<br>
-            Start Button: Enter<br>
-            Select Button: Shift<br>
-            Toggle Menu: F1<br>
-            Fast forward: Spacebar (toggle)<br>
-            Slow motion: E (hold)<br>
-            Save state: F2<br>
-            Load state: F4
-        </div>
+  <img class="solnes-logo" src="solnewgif.gif" alt="SolNES Logo">
+  <div class="container">
+    <img class="nintendo-banner" src="super-nintendo-logo.png" alt="SolNES Logo" style="width: 300px; height: 50px;">
+    <h2 class="solnes-description">Relive the magic of classic Super Nintendo games on Solana. Dive into nostalgia
+      today!</h2>
+    <p>Play your favorite Super Nintendo game. You can choose from our selection and if it is not in the list you can
+      download it from the <a href="https://www.romsgames.net/roms/super-nintendo/" target="_blank">RomsGames.net</a>
+      website and you will be able to play it on SolNES without any problem.</p>
+    <h2 class="solnes-description">How to play:</h2>
+    <p>1) Press <b>X</b> on Load Game
+      <br>
+      2) Later <b>X</b> on /
+      <br>
+      3) Finally <b>X</b> on Legend of Zelda, The - A Link to the Past (USA).sfc (or the game you want to play)
+    </p>
+
+    <div class="emscripten" id="status"></div>
+    <div class="emscripten">
+      <progress value="0" max="1" id="progress" hidden=""></progress>
     </div>
-    <script type="text/javascript">
-        var count = 0;
+    <div class="emscripten_border" id="canvas_div" style="display: none">
+      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    </div>
+    <div class="emscripten emscripten_border" id="openrom">
+      <h3>Load Game</h3>
+      <select id="romsList" onchange="runEmulator(this.value)">
+        <option value="">Select a game</option>
+        <option value="Legend of Zelda, The - A Link to the Past (USA).sfc.zip">Legend of Zelda, The - A Link to the
+          Past (USA)</option>
+        <!-- Add more ROMs here as needed -->
+      </select>
+      <br>
+      <p>Or upload your own file</p>
+      <br>
+      <input type="file" id="uploadRom" accept=".sfc, .smc, .zip" onchange="handleFileUpload(event)">
+    </div>
+    <hr>
+    <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(true, true)">
+    <hr>
+    <textarea class="emscripten" id="output" rows="8"></textarea>
+    <div class="controls">
+      <strong>Controls:</strong><br>
+      A button (OK in menu): X<br>
+      B button (Back in menu): Z<br>
+      X Button: S<br>
+      Y Button: A<br>
+      L Button: Q<br>
+      R Button: W<br>
+      D-pad: Arrow Keys<br>
+      Start Button: Enter<br>
+      Select Button: Shift<br>
+      Toggle Menu: F1<br>
+      Fast forward: Spacebar (toggle)<br>
+      Slow motion: E (hold)<br>
+      Save state: F2<br>
+      Load state: F4
+    </div>
+  </div>
+  <script type="text/javascript">
+    var count = 0;
 
-        function runEmulator(rom) {
-            if (!rom) return;
+    function runEmulator(rom) {
+      if (!rom) return;
 
-            fetch('/roms/' + rom)
-                .then(response => response.arrayBuffer())
-                .then(data => initFromData(data, rom))
-                .catch(err => console.error('Failed to load ROM:', err));
-        }
+      fetch('/roms/' + rom)
+        .then(response => response.arrayBuffer())
+        .then(data => initFromData(data, rom))
+        .catch(err => console.error('Failed to load ROM:', err));
+    }
 
-        function handleFileUpload(event) {
-            var file = event.target.files[0];
-            if (!file) return;
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                initFromData(e.target.result, file.name);
-            };
-            reader.readAsArrayBuffer(file);
-        }
+    function handleFileUpload(event) {
+      var file = event.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        initFromData(e.target.result, file.name);
+      };
+      reader.readAsArrayBuffer(file);
+    }
 
-        function initFromData(data, name) {
-            var dataView = new Uint8Array(data);
-            Module.FS_createDataFile('/', name, dataView, true, false);
-            Module.FS_createFolder('/', 'etc', true, true);
-            var config = 'input_player1_select = shift\n';
-            var latency = 96;
-            config += 'audio_latency = ' + latency + '\n';
-            config += 'video_vsync = true\n';
-            Module.FS_createDataFile('/etc', 'retroarch.cfg', config, true, true);
-            document.getElementById('canvas_div').style.display = 'block';
-            Module['callMain'](Module['arguments']);
-        }
-    </script>
-    <script type="text/javascript">
-        var Module = {
-            noInitialRun: true,
-            arguments: ["-v", "--menu"],
-            preRun: [],
-            postRun: [],
-            print: (function() {
-                var element = document.getElementById('output');
-                element.value = ''; // clear browser cache
-                return function(text) {
-                    text = Array.prototype.slice.call(arguments).join(' ');
-                    element.value += text + "\n";
-                    element.scrollTop = 99999; // focus on bottom
-                };
-            })(),
-            printErr: function(text) {
-                var text = Array.prototype.slice.call(arguments).join(' ');
-                var element = document.getElementById('output');
-                element.value += text + "\n";
-                element.scrollTop = 99999; // focus on bottom
-            },
-            canvas: document.getElementById('canvas'),
-            setStatus: function(text) {
-                if (Module.setStatus.interval) clearInterval(Module.setStatus.interval);
-                var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
-                var statusElement = document.getElementById('status');
-                var progressElement = document.getElementById('progress');
-                if (m) {
-                    text = m[1];
-                    progressElement.value = parseInt(m[2]) * 100;
-                    progressElement.max = parseInt(m[4]) * 100;
-                    progressElement.hidden = false;
-                } else {
-                    progressElement.value = null;
-                    progressElement.max = null;
-                    progressElement.hidden = true;
-                }
-                statusElement.innerHTML = text;
-            },
-            totalDependencies: 0,
-            monitorRunDependencies: function(left) {
-                this.totalDependencies = Math.max(this.totalDependencies, left);
-                Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
-            }
+    function initFromData(data, name) {
+      var dataView = new Uint8Array(data);
+      Module.FS_createDataFile('/', name, dataView, true, false);
+      Module.FS_createFolder('/', 'etc', true, true);
+      var config = 'input_player1_select = shift\n';
+      var latency = 96;
+      config += 'audio_latency = ' + latency + '\n';
+      config += 'video_vsync = true\n';
+      Module.FS_createDataFile('/etc', 'retroarch.cfg', config, true, true);
+      document.getElementById('canvas_div').style.display = 'block';
+      Module['callMain'](Module['arguments']);
+    }
+  </script>
+  <script type="text/javascript">
+    var Module = {
+      noInitialRun: true,
+      arguments: ["-v", "--menu"],
+      preRun: [],
+      postRun: [],
+      print: (function () {
+        var element = document.getElementById('output');
+        element.value = ''; // clear browser cache
+        return function (text) {
+          text = Array.prototype.slice.call(arguments).join(' ');
+          element.value += text + "\n";
+          element.scrollTop = 99999; // focus on bottom
         };
-        Module.setStatus('Downloading...');
-    </script>
-    <script type="text/javascript" src="snes9x/snes9x-next.js"></script>
+      })(),
+      printErr: function (text) {
+        var text = Array.prototype.slice.call(arguments).join(' ');
+        var element = document.getElementById('output');
+        element.value += text + "\n";
+        element.scrollTop = 99999; // focus on bottom
+      },
+      canvas: document.getElementById('canvas'),
+      setStatus: function (text) {
+        if (Module.setStatus.interval) clearInterval(Module.setStatus.interval);
+        var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+        var statusElement = document.getElementById('status');
+        var progressElement = document.getElementById('progress');
+        if (m) {
+          text = m[1];
+          progressElement.value = parseInt(m[2]) * 100;
+          progressElement.max = parseInt(m[4]) * 100;
+          progressElement.hidden = false;
+        } else {
+          progressElement.value = null;
+          progressElement.max = null;
+          progressElement.hidden = true;
+        }
+        statusElement.innerHTML = text;
+      },
+      totalDependencies: 0,
+      monitorRunDependencies: function (left) {
+        this.totalDependencies = Math.max(this.totalDependencies, left);
+        Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies - left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+      }
+    };
+    Module.setStatus('Downloading...');
+  </script>
+  <script type="text/javascript" src="snes9x/snes9x-next.js"></script>
 </body>
+
 </html>
