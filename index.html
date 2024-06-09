@@ -29,6 +29,8 @@
             <option value="Legend of Zelda, The - A Link to the Past (USA).sfc.zip">Legend of Zelda, The - A Link to the Past (USA)</option>
             <!-- Add more ROMs here as needed -->
         </select>
+        <br>
+        <input type="file" id="uploadRom" accept=".sfc, .smc, .zip" onchange="handleFileUpload(event)">
     </div>
     <hr>
     <div class="emscripten">
@@ -71,6 +73,16 @@
                 .then(response => response.arrayBuffer())
                 .then(data => initFromData(data, rom))
                 .catch(err => console.error('Failed to load ROM:', err));
+        }
+
+        function handleFileUpload(event) {
+            var file = event.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                initFromData(e.target.result, file.name);
+            };
+            reader.readAsArrayBuffer(file);
         }
 
         function initFromData(data, name) {
