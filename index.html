@@ -149,13 +149,46 @@
       <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(true, true)">
       <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
     </div>
+
     <div class="emscripten emscripten_border" id="openrom">
       <h3>Load Game</h3>
       <select id="romsList" onchange="runEmulator(this.value)">
         <option value="">Select a game</option>
         <option value="Legend of Zelda, The - A Link to the Past (USA).sfc.zip">Legend of Zelda, The - A Link to the
           Past (USA)</option>
+        <!-- //add the games:
+    Doom.zip
+    Dragon Ball Z - Super Butoden 2 (V1.1) (J).zip
+    Legend of Zelda, The_ A Link to the Past.zip
+    Mega Man X (U) (V1.1).zip
+    Simpsons, The_ Bart's Nightmare.zip
+    Street Fighter II Turbo (V1.0) (E) [!].zip
+    Super Bomberman 5 Gold Cartridge (J) [!].zip
+    Super Mario All-Stars + Super Mario World.zip
+    Super Mario World (U) [!].zip
+    Ultimate Mortal Kombat 3.zip
+  Final Fantasy III.zip
+  NBA Jam.zip
+  Teenage Mutant Ninja Turtles_ Tournament Fighters.zip
+  Super Double Dragon.zip
+  -->
         <!-- Add more ROMs here as needed -->
+        <option value="Doom.zip">Doom</option>
+        <option value="Dragon Ball Z - Super Butoden 2 (V1.1) (J).zip">Dragon Ball Z - Super Butoden 2 (V1.1) (J)
+        </option>
+        <option value="Legend of Zelda, The_ A Link to the Past.zip">Legend of Zelda, The_ A Link to the Past</option>
+        <option value="Mega Man X (U) (V1.1).zip">Mega Man X (U) (V1.1)</option>
+        <option value="Simpsons, The_ Bart's Nightmare.zip">Simpsons, The_ Bart's Nightmare</option>
+        <option value="Street Fighter II Turbo (V1.0) (E) [!].zip">Street Fighter II Turbo (V1.0) (E) [!]</option>
+        <option value="Super Bomberman 5 Gold Cartridge (J) [!].zip">Super Bomberman 5 Gold Cartridge (J) [!]</option>
+        <option value="Super Mario All-Stars + Super Mario World.zip">Super Mario All-Stars + Super Mario World</option>
+        <option value="Super Mario World (U) [!].zip">Super Mario World (U) [!]</option>
+        <option value="Ultimate Mortal Kombat 3.zip">Ultimate Mortal Kombat 3</option>
+        <option value="Final Fantasy III.zip">Final Fantasy III</option>
+        <option value="NBA Jam.zip">NBA Jam</option>
+        <option value="Teenage Mutant Ninja Turtles_ Tournament Fighters.zip">Teenage Mutant Ninja Turtles_ Tournament
+          Fighters</option>
+        <option value="Super Double Dragon.zip">Super Double Dragon</option>
       </select>
       <br>
       <p>Or upload your own file</p>
