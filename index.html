@@ -101,10 +101,30 @@
       font-size: 20px;
       margin-top: 20px;
     }
+
+    .icons {
+      display: flex;
+      justify-content: center;
+      background: #9833FF;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .icon {
+      margin: 0 4px;
+    }
   </style>
 </head>
 
 <body>
+  <div class="icons">
+    <a href="https://solana.com/" target="_blank"><img class="icon" src="pump_icon.png" alt="Pump Fun Icon"
+        style="width: 30px; height: 30px;"></a>
+    <a href="https://twitter.com/solanaproject" target="_blank"><img class="icon" src="twitter.png" alt="Twitter Icon"
+        style="width: 30px; height: 30px;"></a>
+    <a href="https://t.me/solana" target="_blank"><img class="icon" src="telegram.png" alt="Telegram Icon"
+        style="width: 30px; height: 30px;"></a>
+  </div>
   <img class="solnes-logo" src="solnewgif.gif" alt="SolNES Logo">
   <div class="container">
     <img class="nintendo-banner" src="super-nintendo-logo.png" alt="SolNES Logo" style="width: 300px; height: 50px;">
@@ -126,6 +146,7 @@
       <progress value="0" max="1" id="progress" hidden=""></progress>
     </div>
     <div class="emscripten_border" id="canvas_div" style="display: none">
+      <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(true, true)">
       <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
     </div>
     <div class="emscripten emscripten_border" id="openrom">
@@ -141,9 +162,6 @@
       <br>
       <input type="file" id="uploadRom" accept=".sfc, .smc, .zip" onchange="handleFileUpload(event)">
     </div>
-    <hr>
-    <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(true, true)">
-    <hr>
     <textarea class="emscripten" id="output" rows="8"></textarea>
     <div class="controls">
       <strong>Controls:</strong><br>
