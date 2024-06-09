@@ -1,67 +1,116 @@
 <!DOCTYPE html>
-<!-- saved from url=(0046)http://toadking.com/retroarch/snes9x-next.html -->
 <html lang="en-us">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>RetroArch - Snes9x Next</title>
     <style>
-        .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
-        textarea.emscripten { font-family: monospace; width: 80%; }
-        div.emscripten, h1 { text-align: center; }
-        div.emscripten_border { border: 1px solid black; }
-        #fakerom { font-size: 20pt; margin: 5pt;}
-        canvas.emscripten { border: 0px none; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        h1 {
+            background-color: #282c34;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .emscripten {
+            margin: 10px auto;
+            text-align: center;
+        }
+        textarea.emscripten {
+            font-family: monospace;
+            width: 100%;
+            margin-top: 20px;
+        }
+        div.emscripten_border {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        #fakerom {
+            font-size: 20pt;
+            margin: 5pt;
+        }
+        canvas.emscripten {
+            border: 0px none;
+        }
+        label {
+            margin-right: 10px;
+        }
+        input[type="checkbox"], input[type="file"], select, input[type="button"], input[type="textbox"] {
+            margin-bottom: 10px;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #ddd;
+            margin: 20px 0;
+        }
+        .controls {
+            text-align: left;
+            padding: 10px;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 <body>
-    <h1>Snes9x Next</h1>
-    <hr>
-    <div class="emscripten" id="status"></div>
-    <div class="emscripten">
-        <progress value="0" max="1" id="progress" hidden=""></progress>
-    </div>
-    <div class="emscripten_border" id="canvas_div" style="display: none">
-        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-    </div>
-    <div class="emscripten emscripten_border" id="openrom">
-        <select id="romsList" onchange="runEmulator(this.value)">
-            <option value="">Select a SNES ROM</option>
-            <option value="Legend of Zelda, The - A Link to the Past (USA).sfc.zip">Legend of Zelda, The - A Link to the Past (USA)</option>
-            <!-- Add more ROMs here as needed -->
-        </select>
-        <br>
-        <input type="file" id="uploadRom" accept=".sfc, .smc, .zip" onchange="handleFileUpload(event)">
-    </div>
-    <hr>
-    <div class="emscripten">
-        <input type="checkbox" id="resize"><label for="resize">Resize canvas</label>
-        <input type="checkbox" id="pointerLock" checked=""><label for="pointerLock">Lock/hide mouse pointer</label>
-        &nbsp;&nbsp;&nbsp;
-        <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(document.getElementById('pointerLock').checked, document.getElementById('resize').checked)">
-        <br>
-        <input type="checkbox" id="vsync"><label for="vsync" id="vsync-label">Enable V-sync (can only be done before loading game)</label><br>
-        <input type="textbox" id="latency" size="3" maxlength="3" value="96"> <label for="latency" id="latency-label">Audio latency (ms) (increase if you hear pops at fullspeed, can only be done before loading game)</label>
-    </div>
-    <hr>
-    <textarea class="emscripten" id="output" rows="8"></textarea>
-    <hr>
-    <div class="emscripten" id="controls">
-        Controls:<br>
-        <br>
-        A button (OK in menu): X<br>
-        B button (Back in menu): Z<br>
-        X Button: S<br>
-        Y Button: A<br>
-        L Button: Q<br>
-        R Button: W<br>
-        D-pad: Arrow Keys<br>
-        Start Button: Enter<br>
-        Select Button: Shift<br>
-        Toggle Menu: F1<br>
-        Fast forward: Spacebar (toggle)<br>
-        Slow motion: E (hold)<br>
-        Save state: F2<br>
-        Load state: F4
+    <h1>RetroArch - Snes9x Next</h1>
+    <div class="container">
+        <div class="emscripten" id="status"></div>
+        <div class="emscripten">
+            <progress value="0" max="1" id="progress" hidden=""></progress>
+        </div>
+        <div class="emscripten_border" id="canvas_div" style="display: none">
+            <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+        </div>
+        <div class="emscripten emscripten_border" id="openrom">
+            <select id="romsList" onchange="runEmulator(this.value)">
+                <option value="">Select a SNES ROM</option>
+                <option value="Legend of Zelda, The - A Link to the Past (USA).sfc.zip">Legend of Zelda, The - A Link to the Past (USA)</option>
+                <!-- Add more ROMs here as needed -->
+            </select>
+            <br>
+            <input type="file" id="uploadRom" accept=".sfc, .smc, .zip" onchange="handleFileUpload(event)">
+        </div>
+        <hr>
+        <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(true, true)">
+        <hr>
+        <textarea class="emscripten" id="output" rows="8"></textarea>
+        <div class="controls">
+            <strong>Controls:</strong><br>
+            A button (OK in menu): X<br>
+            B button (Back in menu): Z<br>
+            X Button: S<br>
+            Y Button: A<br>
+            L Button: Q<br>
+            R Button: W<br>
+            D-pad: Arrow Keys<br>
+            Start Button: Enter<br>
+            Select Button: Shift<br>
+            Toggle Menu: F1<br>
+            Fast forward: Spacebar (toggle)<br>
+            Slow motion: E (hold)<br>
+            Save state: F2<br>
+            Load state: F4
+        </div>
     </div>
     <script type="text/javascript">
         var count = 0;
@@ -90,19 +139,11 @@
             Module.FS_createDataFile('/', name, dataView, true, false);
             Module.FS_createFolder('/', 'etc', true, true);
             var config = 'input_player1_select = shift\n';
-            var latency = parseInt(document.getElementById('latency').value, 10);
-            if (isNaN(latency)) latency = 96;
+            var latency = 96;
             config += 'audio_latency = ' + latency + '\n';
-            if (document.getElementById('vsync').checked)
-                config += 'video_vsync = true\n';
-            else
-                config += 'video_vsync = false\n';
+            config += 'video_vsync = true\n';
             Module.FS_createDataFile('/etc', 'retroarch.cfg', config, true, true);
             document.getElementById('canvas_div').style.display = 'block';
-            document.getElementById('vsync').disabled = true;
-            document.getElementById('vsync-label').style.color = 'gray';
-            document.getElementById('latency').disabled = true;
-            document.getElementById('latency-label').style.color = 'gray';
             Module['callMain'](Module['arguments']);
         }
     </script>
